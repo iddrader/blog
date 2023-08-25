@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import multer from 'multer';
 import cors from 'cors';
+import dotenv from 'dotenv';
 
 import { registerValidation, loginValidation, postCreateValidation } from './validations.js';
 import { UserController, PostController } from './controllers/index.js';
@@ -9,6 +10,7 @@ import { checkAuth, handleValidationErrors } from './utils/index.js';
 
 const PORT = 3000;
 const app = express();
+dotenv.config();
 
 const storage = multer.diskStorage({
     destination: (_,__, cb) => {
@@ -45,7 +47,7 @@ app.get('/posts/:id', PostController.getOne);
 app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
 app.delete('/posts/:id', checkAuth, PostController.remove)
 app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update)
-
+app.post('/posts/:id/comment', checkAuth, PostController.createComment)
 app.listen(PORT, (err) => {
     if(err) return console.log(err)
     console.log(`Server is running on port ${PORT} `)

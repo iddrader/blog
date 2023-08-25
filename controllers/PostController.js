@@ -8,9 +8,12 @@ export const create = async (req, res) => {
             imageURL: req.body.imageURL,
             tags: req.body.tags,
             user: req.userId,
+            comments: req.body.comments
         }) 
+        console.log(req.body)
 
         const post = await doc.save();
+        console.log(post)
 
         res.json(post)
     } catch (err) {
@@ -57,6 +60,30 @@ export const getOne = async (req, res) => {
     }
 }
 
+export const createComment = async (req, res) => {
+    try {
+        const postId = req.params.id;
+
+        const post = await PostModel.findOneAndUpdate({
+                _id: postId,
+            }, 
+            {
+                $push: { comments: req.body.comment },
+            }, 
+            {
+                returnDocument: 'after',
+            }
+        ).populate('user').exec();
+
+        res.json(post)
+    } catch (error) {
+        console.log(error);
+        return res.json({
+            message: "Couldn't create comment"
+        })
+    }
+}
+ 
 export const remove = async (req, res) => {
     try {
         await PostModel.findOneAndDelete({_id: req.params.id, user: req.userId})
