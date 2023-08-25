@@ -26,7 +26,7 @@ app.use(cors());
 app.use('/uploads', express.static('uploads'));
 
 mongoose
-    .connect('mongodb+srv://admin:wwwwww@cluster0.tplnjlm.mongodb.net/blog?retryWrites=true&w=majority')
+    .connect(`mongodb+srv://admin:${process.env.DB_PASSWORD}@cluster0.tplnjlm.mongodb.net/blog?retryWrites=true&w=majority`)
     .then(() => console.log("Connected to DB"))
     .catch((err) => console.log("DB error", err))
 
