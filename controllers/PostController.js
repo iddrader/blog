@@ -36,6 +36,18 @@ export const getAll = async (req, res) => {
     }
 }
 
+export const getMyPosts = async (req, res) => {
+    try {
+        const posts = await PostModel.find({user: req.userId});
+        res.json(posts)
+    } catch (err) {
+        console.log(err);
+        return res.json({
+            message: "Couldn't get posts"
+        })
+    }
+}
+
 export const getOne = async (req, res) => {
     try {
         const postId = req.params.id;

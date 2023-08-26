@@ -48,6 +48,8 @@ app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, Post
 app.delete('/posts/:id', checkAuth, PostController.remove)
 app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update)
 app.post('/posts/:id/comment', checkAuth, PostController.createComment)
+app.get('/myposts', checkAuth, PostController.getMyPosts)
+
 app.listen(PORT, (err) => {
     if(err) return console.log(err)
     console.log(`Server is running on port ${PORT} `)
